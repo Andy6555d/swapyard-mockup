@@ -339,6 +339,7 @@
     <nav>
       <a href="#browse" class="active">Browse Stock</a>
       <a href="#list">List Stock</a>
+      <a href="#request">Requests</a>
       <a href="#how">How it Works</a>
     </nav>
   </div>
@@ -395,6 +396,55 @@
   <div class="wrap">
     <div class="grid" id="grid"><!-- cards injected by JS --></div>
     <div class="empty" id="empty-state">NO MATCHING STOCK — try clearing a filter or check back later.</div>
+  </div>
+</section>
+
+<section id="request">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Requests</h2>
+      <span class="sub" id="request-count">3 OPEN REQUESTS</span>
+    </div>
+    <div style="background:var(--paper-card);border:1.5px dashed var(--amber-dark);border-radius:var(--radius);padding:24px;max-width:560px;margin-bottom:32px;">
+      <p style="color:var(--steel);font-size:13.5px;margin:0 0 16px;">Looking for something you can't find listed? Post it here — other outlets will see it and can get in touch if they have it.</p>
+      <form id="request-form">
+        <div class="field">
+          <label for="req-title">What are you looking for?</label>
+          <input type="text" id="req-title" placeholder="e.g. Surplus 100mm dense blocks, any quantity" required>
+        </div>
+        <div class="field">
+          <label for="req-desc">More detail (optional)</label>
+          <textarea id="req-desc" placeholder="Quantity needed, timeframe, anything else useful..."></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="req-cat">Category</label>
+            <select id="req-cat">
+              <option>Bricks & Block</option>
+              <option>Timber & Sheet</option>
+              <option>Insulation</option>
+              <option>Heating & Plumbing</option>
+              <option>Roofing</option>
+              <option>Sanitaryware</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="req-county">Your county</label>
+            <select id="req-county">
+              <option>Cork</option>
+              <option>Galway</option>
+              <option>Limerick</option>
+              <option>Kildare</option>
+              <option>Donegal</option>
+              <option>Mayo</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Post Request</button>
+      </form>
+    </div>
+
+    <div class="grid" id="request-grid"><!-- injected by JS --></div>
   </div>
 </section>
 
@@ -553,6 +603,49 @@ document.getElementById('cat-filter').addEventListener('change', applyFilters);
 document.getElementById('county-filter').addEventListener('change', applyFilters);
 
 render(listings);
+
+const requests = [
+  {title:"Surplus 100mm dense blocks, any quantity", cat:"Bricks & Block", county:"Kildare", desc:"Job starting next week, short on stock. Any quantity considered.", outlet:"Outlet · Kildare"},
+  {title:"C16 or C24 timber, 47x100mm — 20+ lengths", cat:"Timber & Sheet", county:"Cork", desc:"Roof job, standard grade fine, just need the volume.", outlet:"Outlet · Cork"},
+  {title:"Any end-of-line sanitaryware, white", cat:"Sanitaryware", county:"Mayo", desc:"", outlet:"Outlet · Mayo"},
+];
+
+const requestGrid = document.getElementById('request-grid');
+const requestCount = document.getElementById('request-count');
+
+function renderRequests(){
+  requestGrid.innerHTML = "";
+  requests.forEach(r=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-body">
+        <div class="card-cat">${r.cat}</div>
+        <p class="card-title">${r.title}</p>
+        ${r.desc ? `<p class="card-desc">${r.desc}</p>` : ''}
+        <div class="card-foot">
+          <span class="stamp">${r.outlet}</span>
+          <a href="#" class="contact-link" onclick="return false;">I have this →</a>
+        </div>
+      </div>
+    `;
+    requestGrid.appendChild(card);
+  });
+  requestCount.textContent = `${requests.length} OPEN REQUESTS`;
+}
+renderRequests();
+
+document.getElementById('request-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const title = document.getElementById('req-title').value;
+  const desc = document.getElementById('req-desc').value;
+  const cat = document.getElementById('req-cat').value;
+  const county = document.getElementById('req-county').value;
+  requests.unshift({title, desc, cat, county, outlet: "Your Outlet · " + county});
+  renderRequests();
+  this.reset();
+  window.scrollTo({top: document.getElementById('request').offsetTop - 80, behavior:'smooth'});
+});
 
 /* --- Upload form mock behaviour --- */
 const dropzone = document.getElementById('dropzone');
