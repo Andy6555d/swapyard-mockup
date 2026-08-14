@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SwapYard — Merchant Stock Exchange</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C2B39'/%3E%3Crect x='9' y='9' width='14' height='14' rx='2' fill='%23E2A73B' transform='rotate(45 16 16)'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -118,6 +119,8 @@
   .btn-primary:hover{background:var(--amber-dark);}
   .btn-ghost{background:transparent;color:var(--paper);border-color:#3d5062;}
   .btn-ghost:hover{border-color:var(--paper);}
+  .btn-secondary{background:var(--ink);color:var(--paper);}
+  .btn-secondary:hover{background:#2b3d4d;}
 
   .ticker{
     font-family:'IBM Plex Mono',monospace;
@@ -314,9 +317,35 @@
     font-size:13.5px;color:var(--steel);line-height:1.55;margin:0;
   }
 
-  footer{
-    padding:28px 0;text-align:center;
-    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);
+  .site-footer{
+    background:var(--ink);color:#B9C2C8;margin-top:20px;border-top:3px solid var(--amber);
+  }
+  .footer-inner{
+    display:grid;grid-template-columns:1.4fr 2fr;gap:40px;padding:44px 0 32px;
+  }
+  .footer-logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--paper);margin-bottom:10px;
+  }
+  .footer-tagline{font-size:13px;color:#8CA0AC;max-width:320px;margin:0;line-height:1.5;}
+  .footer-links{display:flex;gap:40px;flex-wrap:wrap;}
+  .footer-col{display:flex;flex-direction:column;gap:8px;}
+  .footer-col-title{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:0.08em;color:var(--amber);margin-bottom:4px;
+  }
+  .footer-col a{font-size:13.5px;color:#B9C2C8;text-decoration:none;}
+  .footer-col a:hover{color:var(--paper);text-decoration:underline;}
+  .footer-bottom{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    padding:16px 0;border-top:1px solid #2b3d4d;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6C808C;
+  }
+
+  @media (max-width:700px){
+    .footer-inner{grid-template-columns:1fr;gap:28px;}
+    .footer-links{gap:28px;}
+    .footer-bottom{flex-direction:column;}
   }
 
   @media (max-width:860px){
@@ -340,6 +369,7 @@
       <a href="#browse" class="active">Browse Stock</a>
       <a href="#list">List Stock</a>
       <a href="#request">Requests</a>
+      <a href="#billing">Billing</a>
       <a href="#how">How it Works</a>
     </nav>
   </div>
@@ -745,8 +775,34 @@
   </div>
 </section>
 
-<footer>
-  For independent merchant outlets only — not publicly visible. · SwapYard mock-up
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><span class="logo-mark"></span>SwapYard</div>
+      <p class="footer-tagline">A noticeboard for independent merchants to move surplus and end-of-line stock.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <span class="footer-col-title">Platform</span>
+        <a href="#top">Home</a>
+        <a href="#browse">Browse Stock</a>
+        <a href="#request">Requests</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Legal</span>
+        <a href="https://swapyard.ie/privacy">Privacy Policy</a>
+        <a href="https://swapyard.ie/terms">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Contact</span>
+        <a href="mailto:hello@swapyard.ie">hello@swapyard.ie</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 SwapYard. All rights reserved.</span>
+    <span>Not affiliated with any single merchant or manufacturer. · SwapYard mock-up</span>
+  </div>
 </footer>
 
 <script>
