@@ -204,6 +204,16 @@
   }
   .card-media span{position:relative;z-index:2;background:rgba(0,0,0,0.28);padding:4px 10px;border-radius:100px;}
   .card-media img{width:100%;height:100%;object-fit:cover;}
+  .status-stamp{
+    position:absolute;top:22px;left:-38px;width:180px;z-index:4;
+    padding:6px 0;text-align:center;transform:rotate(-30deg);
+    font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:0.06em;
+    color:#fff;background:rgba(166,58,44,0.88);
+    border-top:2px solid rgba(255,255,255,0.65);border-bottom:2px solid rgba(255,255,255,0.65);
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);pointer-events:none;
+  }
+  .status-stamp.reserved{background:rgba(226,167,59,0.92);color:var(--ink);}
+  button.contact-link{background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;}
   .tag{
     position:absolute;top:-10px;right:14px;z-index:3;
     background:var(--amber);color:var(--ink);
@@ -808,19 +818,35 @@
 
 <script>
 const listings = [
-  {title:"Class B engineering bricks — 400 units", cat:"Bricks and Blocks", county:"Cork", price:340, desc:"Sound, frost-resistant, damp-course grade. Some mortar residue, collection only.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#8a5a44,#5c3a2b)", img:"https://images.unsplash.com/photo-1495578942200-c5f5d2137def?w=400&h=300&fit=crop&auto=format", clearance:false},
-  {title:"Celotex GA4000 100mm — 22m² offcuts", cat:"Insulation Rigid", county:"Galway", price:95, desc:"Mixed sizes 600×600 up to 2400×1200. Full boards, unopened packs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#c9a24c,#8a6d24)", img:"celotex-insulation.jpg", clearance:false},
-  {title:"C24 structural timber, 30 lengths", cat:"Rough Timber", county:"Limerick", price:210, desc:"Kiln-dried, grade-stamped 47×175mm. Surplus from a finished frame job.", outlet:"Outlet · Limerick", grad:"linear-gradient(135deg,#b98454,#7a5731)", img:"c24-timber.jpg", clearance:false},
-  {title:"Discontinued 100mm dense blocks — 1,100 units", cat:"Bricks and Blocks", county:"Kildare", price:610, desc:"Manufacturer no longer produces this line. Brand new, banded, dry stored.", outlet:"Outlet · Kildare", grad:"linear-gradient(135deg,#7d8a8f,#4d5a5e)", img:"https://images.unsplash.com/photo-1520758594221-872948699332?w=400&h=300&fit=crop&auto=format", clearance:true},
-  {title:"Cast-iron style radiators — 6 units", cat:"Radiators", county:"Donegal", price:480, desc:"End-of-line stock, boxed, mixed sizes. Spec sheets available on request.", outlet:"Outlet · Donegal", grad:"linear-gradient(135deg,#3d5a6b,#22343e)", img:"cast-iron-radiators.jpg", clearance:false},
-  {title:"Slate roof tiles — approx 6m² job lot", cat:"Roofing Products", county:"Mayo", price:150, desc:"Reclaimed from a re-roofing job. Sound, graded, ready to lay.", outlet:"Outlet · Mayo", grad:"linear-gradient(135deg,#5a5f66,#2c2f33)", img:"slate-roof-tiles.jpg", clearance:false},
-  {title:"Sanitaryware — 4 basins, 2 WCs, end-of-line", cat:"WC's", county:"Cork", price:220, desc:"Discontinued colourway. Boxed, undamaged, showroom returns.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#c7ccc6,#8f958e)", img:"sanitaryware.jpg", clearance:true},
-  {title:"Copper pipe offcuts, 15mm & 22mm — mixed", cat:"Copper & Qualpex", county:"Galway", price:60, desc:"Various lengths, clean stock, ideal for small jobs and repairs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#b5652f,#7a3f1c)", img:"copper-pipe.jpg", clearance:false},
+  {title:"Class B engineering bricks — 400 units", cat:"Bricks and Blocks", county:"Cork", price:340, desc:"Sound, frost-resistant, damp-course grade. Some mortar residue, collection only.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#8a5a44,#5c3a2b)", img:"https://images.unsplash.com/photo-1495578942200-c5f5d2137def?w=400&h=300&fit=crop&auto=format", clearance:false, status:"active", email:"outlet.cork@example.com", phone:"021 555 0142", preferredContact:"both"},
+  {title:"Celotex GA4000 100mm — 22m² offcuts", cat:"Insulation Rigid", county:"Galway", price:95, desc:"Mixed sizes 600×600 up to 2400×1200. Full boards, unopened packs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#c9a24c,#8a6d24)", img:"celotex-insulation.jpg", clearance:false, status:"reserved", email:"outlet.galway@example.com", phone:null, preferredContact:"email"},
+  {title:"C24 structural timber, 30 lengths", cat:"Rough Timber", county:"Limerick", price:210, desc:"Kiln-dried, grade-stamped 47×175mm. Surplus from a finished frame job.", outlet:"Outlet · Limerick", grad:"linear-gradient(135deg,#b98454,#7a5731)", img:"c24-timber.jpg", clearance:false, status:"active", email:"outlet.limerick@example.com", phone:"061 555 0198", preferredContact:"phone"},
+  {title:"Discontinued 100mm dense blocks — 1,100 units", cat:"Bricks and Blocks", county:"Kildare", price:610, desc:"Manufacturer no longer produces this line. Brand new, banded, dry stored.", outlet:"Outlet · Kildare", grad:"linear-gradient(135deg,#7d8a8f,#4d5a5e)", img:"https://images.unsplash.com/photo-1520758594221-872948699332?w=400&h=300&fit=crop&auto=format", clearance:true, status:"active", email:"outlet.kildare@example.com", phone:"045 555 0176", preferredContact:"both"},
+  {title:"Cast-iron style radiators — 6 units", cat:"Radiators", county:"Donegal", price:480, desc:"End-of-line stock, boxed, mixed sizes. Spec sheets available on request.", outlet:"Outlet · Donegal", grad:"linear-gradient(135deg,#3d5a6b,#22343e)", img:"cast-iron-radiators.jpg", clearance:false, status:"sold", email:"outlet.donegal@example.com", phone:"074 555 0163", preferredContact:"both"},
+  {title:"Slate roof tiles — approx 6m² job lot", cat:"Roofing Products", county:"Mayo", price:150, desc:"Reclaimed from a re-roofing job. Sound, graded, ready to lay.", outlet:"Outlet · Mayo", grad:"linear-gradient(135deg,#5a5f66,#2c2f33)", img:"slate-roof-tiles.jpg", clearance:false, status:"active", email:"outlet.mayo@example.com", phone:null, preferredContact:"email"},
+  {title:"Sanitaryware — 4 basins, 2 WCs, end-of-line", cat:"WC's", county:"Cork", price:220, desc:"Discontinued colourway. Boxed, undamaged, showroom returns.", outlet:"Outlet · Cork", grad:"linear-gradient(135deg,#c7ccc6,#8f958e)", img:"sanitaryware.jpg", clearance:true, status:"active", email:"outlet.cork2@example.com", phone:"021 555 0187", preferredContact:"phone"},
+  {title:"Copper pipe offcuts, 15mm & 22mm — mixed", cat:"Copper & Qualpex", county:"Galway", price:60, desc:"Various lengths, clean stock, ideal for small jobs and repairs.", outlet:"Outlet · Galway", grad:"linear-gradient(135deg,#b5652f,#7a3f1c)", img:"copper-pipe.jpg", clearance:false, status:"active", email:"outlet.galway2@example.com", phone:"091 555 0154", preferredContact:"both"},
 ];
 
 const grid = document.getElementById('grid');
 const emptyState = document.getElementById('empty-state');
 const resultCount = document.getElementById('result-count');
+
+function buildContactHtml(item, cardId){
+  const revealId = `reveal-${cardId}`;
+  const linksId = `links-${cardId}`;
+  let linksHtml = '';
+  if((item.preferredContact === 'email' || item.preferredContact === 'both') && item.email){
+    linksHtml += `<a class="contact-link" href="mailto:${item.email}" onclick="return false;">Email</a>`;
+  }
+  if((item.preferredContact === 'phone' || item.preferredContact === 'both') && item.phone){
+    linksHtml += `<a class="contact-link" href="tel:${item.phone}" onclick="return false;" style="margin-left:10px;">Call ${item.phone}</a>`;
+  }
+  return `
+    <button type="button" id="${revealId}" class="contact-link" onclick="document.getElementById('${revealId}').style.display='none';document.getElementById('${linksId}').style.display='flex';">Show contact →</button>
+    <div id="${linksId}" style="display:none;">${linksHtml}</div>
+  `;
+}
 
 function render(data){
   grid.innerHTML = "";
@@ -829,19 +855,23 @@ function render(data){
   } else {
     emptyState.style.display = "none";
   }
-  data.forEach(item=>{
+  data.forEach((item, idx)=>{
     const card = document.createElement('div');
     card.className = 'card';
+    const isNotActive = item.status && item.status !== 'active';
+    const stampHtml = isNotActive
+      ? `<div class="status-stamp ${item.status}">${item.status === 'reserved' ? 'RESERVED' : 'SOLD'}</div>`
+      : '';
     card.innerHTML = `
-      <div class="tag ${item.clearance ? 'clearance':''}">€${item.price.toLocaleString()}</div>
-      <div class="card-media" style="background:${item.grad}">${item.img ? `<img src="${item.img}" alt="${item.cat}" loading="lazy" onerror="this.style.display='none'">` : `<span>${item.cat}</span>`}</div>
+      <div class="tag ${isNotActive ? 'clearance':''}">€${item.price.toLocaleString()}</div>
+      <div class="card-media" style="background:${item.grad}">${stampHtml}${item.img ? `<img src="${item.img}" alt="${item.cat}" loading="lazy" onerror="this.style.display='none'">` : `<span>${item.cat}</span>`}</div>
       <div class="card-body">
         <div class="card-cat">${item.clearance ? 'Clearance · ' : ''}${item.cat}</div>
         <p class="card-title">${item.title}</p>
         <p class="card-desc">${item.desc}</p>
         <div class="card-foot">
           <span class="stamp">${item.outlet}</span>
-          <a href="#" class="contact-link" onclick="return false;">Contact outlet →</a>
+          ${buildContactHtml(item, idx)}
         </div>
       </div>
     `;
