@@ -243,6 +243,15 @@
   .calc-result .btn{width:100%;justify-content:center;}
   .calc-guide-link{display:block;margin-top:12px;font-size:12.5px;color:#8CA0AC;text-decoration:none;}
   .calc-guide-link:hover{color:var(--paper);text-decoration:underline;}
+
+  .skip-calc{
+    background:var(--paper-card);border:1.5px dashed var(--amber-dark);border-radius:var(--radius);
+    padding:22px;max-width:420px;margin:0 auto;
+  }
+  .skip-calc-label{font-size:13px;font-weight:700;color:var(--steel);margin:0 0 10px;}
+  .skip-calc-input{max-width:200px;}
+  .skip-calc-result{font-size:14.5px;color:var(--ink);line-height:1.5;margin:16px 0 0;}
+  .skip-calc-result strong{color:var(--brick);}
   .tag{
     position:absolute;top:-10px;right:14px;z-index:3;
     background:var(--amber);color:var(--ink);
@@ -476,6 +485,19 @@
         <a href="https://swapyard.ie/aged-stock-guide" class="calc-guide-link">What counts as aged stock? →</a>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="skip-calc">
+    <p class="skip-calc-label">What did your last skip collection cost?</p>
+    <div class="calc-input-euro skip-calc-input">
+      <span>€</span>
+      <input type="number" id="skip-cost" min="0" step="10" value="350">
+    </div>
+    <p class="skip-calc-result" id="skip-calc-result">
+      That's <strong>1.8 years</strong> of SwapYard membership, for stock that could have gone to someone who actually needed it instead.
+    </p>
   </div>
 </section>
 
@@ -876,6 +898,7 @@
       <div class="footer-col">
         <span class="footer-col-title">Resources</span>
         <a href="https://swapyard.ie/aged-stock-guide">Aged Stock Guide</a>
+        <a href="https://swapyard.ie/faq">FAQ</a>
       </div>
       <div class="footer-col">
         <span class="footer-col-title">Legal</span>
@@ -1099,6 +1122,24 @@ function updateCalculator(){
 calcStockholding.addEventListener('input', updateCalculator);
 calcPercentage.addEventListener('input', updateCalculator);
 updateCalculator();
+
+/* --- Skip cost calculator --- */
+const skipCostInput = document.getElementById('skip-cost');
+const skipCalcResult = document.getElementById('skip-calc-result');
+
+function updateSkipCalc(){
+  const skipCost = Number(skipCostInput.value) || 0;
+  if(skipCost > 0){
+    const years = (skipCost / 200).toFixed(1);
+    skipCalcResult.innerHTML = "That's <strong>" + years + " years</strong> of SwapYard membership, for stock that could have gone to someone who actually needed it instead.";
+    skipCalcResult.style.display = 'block';
+  } else {
+    skipCalcResult.style.display = 'none';
+  }
+}
+
+skipCostInput.addEventListener('input', updateSkipCalc);
+updateSkipCalc();
 
 </script>
 
