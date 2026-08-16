@@ -214,6 +214,35 @@
   }
   .status-stamp.reserved{background:rgba(226,167,59,0.92);color:var(--ink);}
   button.contact-link{background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;}
+
+  .calc-section{padding:50px 0;}
+  .calc-card{
+    background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;
+  }
+  .calc-card h2{font-family:'Archivo Black',sans-serif;font-size:24px;margin:0 0 28px;grid-column:1 / -1;}
+  .calc-inputs{display:flex;flex-direction:column;gap:26px;}
+  .calc-field label{display:block;font-size:13px;font-weight:700;color:var(--steel);margin-bottom:10px;}
+  .calc-input-euro{
+    display:flex;align-items:center;border:1.5px solid var(--line);border-radius:var(--radius);
+    background:#fff;padding:0 12px;
+  }
+  .calc-input-euro span{font-family:'IBM Plex Mono',monospace;color:var(--steel);}
+  .calc-input-euro input{border:none;padding:12px 8px;font-size:18px;font-weight:700;width:100%;background:transparent;}
+  .calc-input-euro input:focus{outline:none;}
+  .calc-slider-row{display:flex;align-items:center;gap:14px;}
+  .calc-slider-row input[type="range"]{flex:1;accent-color:var(--amber);}
+  .calc-slider-value{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;color:var(--ink);min-width:44px;text-align:right;}
+  .calc-result{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:28px;text-align:center;}
+  .calc-result-line{font-size:14px;color:#B9C2C8;margin:0;}
+  .calc-result-figure{font-family:'Archivo Black',sans-serif;font-size:44px;color:var(--amber);margin:6px 0;}
+  .calc-divider{height:1px;background:#2b3d4d;margin:20px 0;}
+  .calc-compare-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#B9C2C8;margin-bottom:14px;}
+  .calc-multiplier{font-size:14.5px;line-height:1.5;margin:0 0 22px;}
+  .calc-multiplier strong{color:var(--amber);}
+  .calc-result .btn{width:100%;justify-content:center;}
+  .calc-guide-link{display:block;margin-top:12px;font-size:12.5px;color:#8CA0AC;text-decoration:none;}
+  .calc-guide-link:hover{color:var(--paper);text-decoration:underline;}
   .tag{
     position:absolute;top:-10px;right:14px;z-index:3;
     background:var(--amber);color:var(--ink);
@@ -365,6 +394,7 @@
     .how-grid{grid-template-columns:1fr;}
     h1{font-size:32px;}
     nav{display:none;}
+    .calc-card{grid-template-columns:1fr;padding:26px;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;}
@@ -401,6 +431,50 @@
       <div class="ticker-row"><span class="k">Outlets participating</span><span class="v">54</span></div>
       <div class="ticker-row"><span class="k">Counties covered</span><span class="v">21</span></div>
       <div class="ticker-row"><span class="k">Platform fee</span><span class="v">€200.00 / year</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="calc-section">
+  <div class="wrap">
+    <div class="calc-card">
+      <h2>What's your aged stock actually costing you?</h2>
+
+      <div class="calc-inputs">
+        <div class="calc-field">
+          <label for="calc-stockholding">What's your approximate stockholding?</label>
+          <div class="calc-input-euro">
+            <span>€</span>
+            <input type="number" id="calc-stockholding" min="0" step="1000" value="750000">
+          </div>
+        </div>
+        <div class="calc-field">
+          <label for="calc-percentage">Approximately what percentage is aged / slow moving?</label>
+          <div class="calc-slider-row">
+            <input type="range" id="calc-percentage" min="0" max="30" step="1" value="8">
+            <span class="calc-slider-value" id="calc-percentage-value">8%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <p class="calc-result-line">You could have approximately</p>
+        <p class="calc-result-figure" id="calc-figure">€60,000</p>
+        <p class="calc-result-line">tied up in aged stock.</p>
+
+        <div class="calc-divider"></div>
+
+        <div class="calc-compare-row">
+          <span>SwapYard membership</span>
+          <span>€200/year</span>
+        </div>
+        <p class="calc-multiplier" id="calc-multiplier-text">
+          Recovering just <strong>1%</strong> of that aged stock would equal <strong>3.0×</strong> the annual membership cost.
+        </p>
+
+        <a href="#" class="btn btn-primary" onclick="return false;">Start moving it →</a>
+        <a href="https://swapyard.ie/aged-stock-guide" class="calc-guide-link">What counts as aged stock? →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -800,6 +874,10 @@
         <a href="#request">Requests</a>
       </div>
       <div class="footer-col">
+        <span class="footer-col-title">Resources</span>
+        <a href="https://swapyard.ie/aged-stock-guide">Aged Stock Guide</a>
+      </div>
+      <div class="footer-col">
         <span class="footer-col-title">Legal</span>
         <a href="https://swapyard.ie/privacy">Privacy Policy</a>
         <a href="https://swapyard.ie/terms">Terms of Service</a>
@@ -989,6 +1067,39 @@ document.getElementById('listing-form').addEventListener('submit', function(e){
   setTimeout(()=> toast.style.display = "none", 3500);
   window.scrollTo({top:0, behavior:'smooth'});
 });
+/* --- Aged stock calculator --- */
+const calcStockholding = document.getElementById('calc-stockholding');
+const calcPercentage = document.getElementById('calc-percentage');
+const calcPercentageValue = document.getElementById('calc-percentage-value');
+const calcFigure = document.getElementById('calc-figure');
+const calcMultiplierText = document.getElementById('calc-multiplier-text');
+
+function formatEuro(n){
+  return '€' + Math.round(n).toLocaleString('en-IE');
+}
+
+function updateCalculator(){
+  const stockholding = Number(calcStockholding.value) || 0;
+  const percentage = Number(calcPercentage.value) || 0;
+  calcPercentageValue.textContent = percentage + '%';
+
+  const agedValue = stockholding * (percentage / 100);
+  calcFigure.textContent = formatEuro(agedValue);
+
+  const recoveryValue = agedValue * 0.01;
+  if(recoveryValue > 0){
+    const multiplier = recoveryValue / 200;
+    calcMultiplierText.innerHTML = 'Recovering just <strong>1%</strong> of that aged stock would equal <strong>' + multiplier.toFixed(1) + '×</strong> the annual membership cost.';
+    calcMultiplierText.style.display = 'block';
+  } else {
+    calcMultiplierText.style.display = 'none';
+  }
+}
+
+calcStockholding.addEventListener('input', updateCalculator);
+calcPercentage.addEventListener('input', updateCalculator);
+updateCalculator();
+
 </script>
 
 </body>
