@@ -454,7 +454,7 @@
           <label for="calc-stockholding">What's your approximate stockholding?</label>
           <div class="calc-input-euro">
             <span>€</span>
-            <input type="number" id="calc-stockholding" min="0" step="1000" value="750000">
+            <input type="text" inputmode="numeric" id="calc-stockholding" value="750,000.00">
           </div>
         </div>
         <div class="calc-field">
@@ -468,14 +468,14 @@
 
       <div class="calc-result">
         <p class="calc-result-line">You could have approximately</p>
-        <p class="calc-result-figure" id="calc-figure">€60,000</p>
+        <p class="calc-result-figure" id="calc-figure">€60,000.00</p>
         <p class="calc-result-line">tied up in aged stock.</p>
 
         <div class="calc-divider"></div>
 
         <div class="calc-compare-row">
           <span>SwapYard membership</span>
-          <span>€200/year</span>
+          <span>€200.00/year</span>
         </div>
         <p class="calc-multiplier" id="calc-multiplier-text">
           Recovering just <strong>1%</strong> of that aged stock would equal <strong>3.0×</strong> the annual membership cost.
@@ -1097,12 +1097,21 @@ const calcPercentageValue = document.getElementById('calc-percentage-value');
 const calcFigure = document.getElementById('calc-figure');
 const calcMultiplierText = document.getElementById('calc-multiplier-text');
 
+function formatWithCommas(n){
+  return n.toLocaleString('en-IE');
+}
+
 function formatEuro(n){
-  return '€' + Math.round(n).toLocaleString('en-IE');
+  return '€' + Math.round(n).toLocaleString('en-IE', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+function getStockholdingValue(){
+  const raw = calcStockholding.value.replace(/[^0-9]/g, '');
+  return raw === '' ? 0 : parseInt(raw, 10);
 }
 
 function updateCalculator(){
-  const stockholding = Number(calcStockholding.value) || 0;
+  const stockholding = getStockholdingValue();
   const percentage = Number(calcPercentage.value) || 0;
   calcPercentageValue.textContent = percentage + '%';
 
@@ -1119,7 +1128,19 @@ function updateCalculator(){
   }
 }
 
-calcStockholding.addEventListener('input', updateCalculator);
+calcStockholding.addEventListener('input', function(){
+  const num = getStockholdingValue();
+  calcStockholding.value = num === 0 ? '' : formatWithCommas(num);
+  updateCalculator();
+});
+calcStockholding.addEventListener('blur', function(){
+  const num = getStockholdingValue();
+  calcStockholding.value = formatWithCommas(num) + '.00';
+});
+calcStockholding.addEventListener('focus', function(){
+  const num = getStockholdingValue();
+  calcStockholding.value = num === 0 ? '' : formatWithCommas(num);
+});
 calcPercentage.addEventListener('input', updateCalculator);
 updateCalculator();
 
