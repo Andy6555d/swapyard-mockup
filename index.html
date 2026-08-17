@@ -1121,7 +1121,9 @@ function formatEuro(n){
 }
 
 function getStockholdingValue(){
-  const raw = calcStockholding.value.replace(/[^0-9]/g, '');
+  const withoutCommas = calcStockholding.value.replace(/,/g, '');
+  const wholePart = withoutCommas.split('.')[0];
+  const raw = wholePart.replace(/[^0-9]/g, '');
   return raw === '' ? 0 : parseInt(raw, 10);
 }
 
