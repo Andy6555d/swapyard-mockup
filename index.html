@@ -43,7 +43,7 @@
   }
   .header-inner{
     display:flex;align-items:center;justify-content:space-between;
-    padding:16px 0;
+    padding:16px 0;flex-wrap:wrap;gap:8px 12px;position:relative;
   }
   .logo{
     display:flex;align-items:center;gap:10px;
@@ -70,6 +70,8 @@
     transition:color .15s, border-color .15s;
   }
   nav a:hover, nav a.active{color:var(--paper);border-color:var(--amber);}
+  .nav-toggle-checkbox{display:none;}
+  .nav-toggle-label{display:none;cursor:pointer;font-size:24px;line-height:1;color:var(--paper);padding:4px 8px;}
   .members-badge{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;color:var(--ink);
@@ -395,6 +397,8 @@
     .footer-inner{grid-template-columns:1fr;gap:28px;}
     .footer-links{gap:28px;}
     .footer-bottom{flex-direction:column;}
+    .field-row{grid-template-columns:1fr;}
+    .filter-row select{flex:1 1 140px;}
   }
 
   @media (max-width:860px){
@@ -402,8 +406,17 @@
     .form-grid{grid-template-columns:1fr;}
     .how-grid{grid-template-columns:1fr;}
     h1{font-size:32px;}
-    nav{display:none;}
     .calc-card{grid-template-columns:1fr;padding:26px;}
+  }
+
+  @media (max-width:760px){
+    .nav-toggle-label{display:block;order:2;}
+    nav{
+      display:none;order:4;width:100%;flex-direction:column;align-items:stretch;
+      gap:0;margin-top:12px;border-top:1px solid #2b3d4d;padding-top:6px;
+    }
+    nav a{width:100%;padding:12px 4px;border-bottom:1px solid #22303c;}
+    .nav-toggle-checkbox:checked ~ nav{display:flex;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;}
@@ -415,6 +428,8 @@
 <header>
   <div class="wrap header-inner">
     <a class="logo" href="#top"><span class="logo-mark"></span>SwapYard</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">☰</label>
     <nav>
       <a href="#browse" class="active">Browse Stock</a>
       <a href="#list">List Stock</a>
@@ -436,7 +451,7 @@
         <a href="#browse" class="btn btn-ghost">Browse Listings</a>
       </div>
     </div>
-    <div class="ticker">
+    <div class="ticker" id="billing">
       <div class="ticker-row"><span class="k">Outlets participating</span><span class="v">54</span></div>
       <div class="ticker-row"><span class="k">Counties covered</span><span class="v">21</span></div>
       <div class="ticker-row"><span class="k">Platform fee</span><span class="v">€200.00 / year</span></div>
